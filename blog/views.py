@@ -47,7 +47,7 @@ def post_delete(request, pk):
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         post.delete()
-        return redirect('post_list')
+        return redirect('home')
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_delete.html', {'form': form})
