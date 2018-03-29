@@ -19,6 +19,11 @@ h1, h2, h3, h4 {
 }
 
 .date {
+    float: left;
+    color: #828282;
+}
+
+.author {
     float: right;
     color: #828282;
 }
