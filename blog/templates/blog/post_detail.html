@@ -8,7 +8,7 @@
                 <p>{{ post.author.username }} </p>
             </div>
         {% endif %}
-        {% if user.is_authenticated %}
+        {% if user.username == post.author.username %}
         <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
         <a class="btn btn-default" href="{% url 'post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
         {% endif %}
@@ -22,5 +22,12 @@
         {% for attach in post.attachments.all %}
             <p>{{  attach.name  }}</p>
         {% endfor %}
+        <h3> Comments: </h3>
+        {% for com in post.comment_set.all %}
+            <p> {{com.user}} : {{com.body}} </p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <p> <a href="{% url 'post_comment' pk=post.pk %}">Add Comment</a></p>
+        {% endif %}
     </div>
 {% endblock %}

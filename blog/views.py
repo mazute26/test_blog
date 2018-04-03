@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 def post_list(request):
@@ -51,3 +51,19 @@ def post_delete(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_delete.html', {'form': form})
+
+def post_comment(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method =="POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            c = form.save(commit=False)
+            c.user = request.user
+            c.published_date = timezone.now()
+            c.post = post
+            c.save()
+            return redirect('post_detail', pk=post.pk)
+
+    else:
+        form = CommentForm()
+    return render(request, 'blog/post_comment.html', {'form': form, 'post': post})
